@@ -8,4 +8,5 @@ Scikit-learn is a package that allows for the performance of machine learning mo
 In this project, the model chosen was the Logistic Regression model.
 Learning was supervised learning based off Kaggle's titanic_train.csv data set.
 The same project was replicated on Google Colaboratory, with the code attached.
-LiLLink
+Link to the Titanic data set on Kaggle: https://www.kaggle.com/competitions/titanic
+Link to SoloLearn's Machine Learning curriculum: https://www.sololearn.com/learning/1094
