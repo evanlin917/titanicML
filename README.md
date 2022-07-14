@@ -7,3 +7,4 @@ Matplotlib is a package that allows for visualization of the data sorted in pand
 Scikit-learn is a package that allows for the performance of machine learning models on the data.
 In this project, the model chosen was the Logistic Regression model.
 Learning was supervised learning based off Kaggle's titanic_train.csv data set.
+The same project was replicated on Google Colaboratory, with the code attached.
