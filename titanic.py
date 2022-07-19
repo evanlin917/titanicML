@@ -56,3 +56,31 @@ print((y == y_pred).sum())
 y.shape[0] #gives the total number of data points in the set
 print((y == y_pred).sum() / y.shape[0])
 print(model.score(x, y)) #alternative way of getting the accuracy
+
+#calculating the evaluation metrics of the model: accuracy, precision, recall, and f1 score
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+print("accuracy: ", accuracy_score(y, y_pred))
+print("precision: ", precision_score(y, y_pred))
+print("recall: ", recall_score(y, y_pred))
+print("f1 score: ", f1_score(y, y_pred))
+
+#outputting the confusion matrix of the model
+from sklearn.metrics import confusion_matrix
+print(confusion_matrix(y, y_pred))
+
+#dividing the dataset into training and test sets
+from sklearn.model_selection import train_test_split
+x_train, x_test, y_train, y_test = train_test_split(x, y, train_size = 0.8, random_state = 27) #setting training size to 80% and test size to be 20%
+print("whole dataset: ", x.shape, y.shape)
+print("training set: ", x_train.shape, y_train.shape)
+print("test set: ", x_test.shape, y_test.shape)
+
+#re-applying the Logistic Regression model towards the training and test datasets
+model = LogisticRegression()
+model.fit(x_train, y_train)
+y_pred = model.predict(x_test)
+print(model.score(x_test, y_test))
+print("accuracy: ", accuracy_score(y_test, y_pred))
+print("precision: ", precision_score(y_test, y_pred))
+print("recall: ", recall_score(y_test, y_pred))
+print("f1 score: ", f1_score(y_test, y_pred))
