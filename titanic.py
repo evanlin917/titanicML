@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as pyplot
+import matplotlib.pyplot as plt
 import sklearn
 
 #using pandas to create a DataFrame to organize the data
@@ -84,3 +84,40 @@ print("accuracy: ", accuracy_score(y_test, y_pred))
 print("precision: ", precision_score(y_test, y_pred))
 print("recall: ", recall_score(y_test, y_pred))
 print("f1 score: ", f1_score(y_test, y_pred))
+
+#sensitivity score is the same as the recall score
+from sklearn.metrics import recall_score
+sensitivity_score = recall_score
+print(sensitivity_score(y_test, y_pred))
+
+#defining a function to output specificity score
+def specificity_score(y_true, y_pred):
+  p, r, f, s = precision_recall_fscore_support(y_true, y_pred)
+  return r[0]
+
+#choosing the threshold of the Logistic Regression model to be equal to 0.75
+model = LogisticRegression()
+model.fit(x_train, y_train)
+print("predict proba: ")
+print(model.predict_proba(x_test))
+y_pred = model.predict_proba(x_test)[:, 1] > 0.75
+print("precision: ", precision_score(y_test, y_pred))
+print("recall: ", recall_score(y_test, y_pred))
+
+#creating a ROC curve comparing specificity against sensitivity
+from sklearn.metrics import roc_curve
+model = LogisticRegression()
+model.fit(x_train, y_train)
+y_pred_proba = model.predict_proba(x_test)
+fpr, tpr, threshold = roc_curve(y_test, y_pred_proba[:, 1])
+plt.plot(fpr, tpr)
+plt.plot([0, 1], [0, 1], linestyle = '--')
+plt.xlim([0.0, 1.0])
+plt.ylim([0.0, 1.0])
+plt.xlabel('1 - specificity')
+plt.ylabel('sensitivity')
+plt.show()
+
+#calculating the area under the curve for the ROC curve recently plotted
+from sklearn.metrics import roc_auc_score
+print(roc_auc_score(y_test, y_pred_proba[:, 1]))
