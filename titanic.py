@@ -121,3 +121,53 @@ plt.show()
 #calculating the area under the curve for the ROC curve recently plotted
 from sklearn.metrics import roc_auc_score
 print(roc_auc_score(y_test, y_pred_proba[:, 1]))
+
+#performing a k-fold cross validation on the data where k = 5
+from sklearn.model_selection import KFold
+new_x = df[['pclass', 'male', 'age', 'sibsp', 'parch', 'fare']].values
+new_y = df['survived'].values
+
+kf = KFold(n_splits = 5, shuffle = True)
+for train, test in kf.split(x):
+  print(train, test)
+
+#setting the first split as training and test sets
+splits = list(kf.split(new_x))
+first_split = splits[0]
+print(first_split)
+train_indices, test_indices = first_split
+print("training set indices: ", train_indices)
+print("test set indices: ", test_indices)
+new_x_train = new_x[train_indices]
+new_x_test = new_x[test_indices]
+new_y_train = new_y[train_indices]
+new_y_test = new_y[test_indices]
+print("new_x_train: ")
+print(new_x_train)
+print("new_y_train: ")
+print(new_y_train)
+print("new_x_test: ")
+print(new_x_test)
+print("new_y_test: ")
+print(new_y_test)
+
+#creating and scoring a new Logistic Regression model against the first split
+new_model = LogisticRegression()
+new_model.fit(new_x_train, new_y_train)
+print(new_model.score(new_x_test, new_y_test))
+
+#looping over all the folds created
+scores = []
+kf = KFold(n_splits = 5, shuffle = True)
+for train_index, test_index in kf.split(new_x):
+  new_x_train, new_x_test = new_x[train_index], new_x[test_index] 
+  new_y_train, new_y_test = new_y[train_index], new_y[test_index]
+  model = LogisticRegression()
+  model.fit(new_x_train, new_y_train)
+  scores.append(model.score(new_x_test, new_y_test))
+print(scores) 
+print(np.mean(scores))
+
+#creating a final model utilizing the accuracies of the models created from splits
+final_model = LogisticRegression()
+final_model.fit(new_x, new_y)
